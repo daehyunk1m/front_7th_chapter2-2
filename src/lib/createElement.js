@@ -34,6 +34,9 @@ export function createElement(vNode) {
 
 function updateAttributes($el, props) {
   if (!props) return;
+
+  const BOOLEAN_ATTRS = ["checked", "disabled", "selected", "readOnly"];
+
   Object.entries(props).forEach(([key, value]) => {
     // 이벤트 핸들러 처리
     if (key.startsWith("on") && typeof value === "function") {
@@ -48,6 +51,8 @@ function updateAttributes($el, props) {
       $el.style.cssText = Object.entries(value)
         .map(([key, value]) => `${key}: ${value}`)
         .join(";");
+    } else if (BOOLEAN_ATTRS.includes(key)) {
+      $el[key] = Boolean(value);
     } else {
       $el.setAttribute(key, value);
     }

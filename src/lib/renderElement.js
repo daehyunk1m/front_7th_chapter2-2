@@ -11,7 +11,7 @@ export function renderElement(vNode, container) {
     container.appendChild(element);
   } else {
     // 이후에는 updateElement로 기존 DOM을 업데이트한다.
-    updateElement(container, normalized, container._vNode);
+    updateElement(container, normalized, container._vNode); // container._vNode는 항상 존재하게 되지 않나?
   }
 
   container._vNode = normalized; // 이전 vNode 저장
