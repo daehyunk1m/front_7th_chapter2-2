@@ -85,18 +85,27 @@ export function updateElement(parentElement, newNode, oldNode, index = 0) {
     parentElement.replaceChild(createElement(newNode), oldChild);
   }
 
-  // 같은 타입 요소 → 속성 업데이트 + 자식 재귀
+  // 같은 타입 요소 → 속성 업데이트 + children 재귀
   if (newNode.type === oldNode.type) {
     // 속성 추가/수정/삭제
     updateAttributes(oldChild, newNode.props, oldNode.props);
 
-    // 자식들을 재귀적으로 업데이트
     const newChildren = newNode.children || [];
     const oldChildren = oldNode.children || [];
-    const maxLength = Math.max(newChildren.length, oldChildren.length);
 
-    for (let i = 0; i < maxLength; i++) {
+    // 공통 부분 업데이트
+    const minLength = Math.min(newChildren.length, oldChildren.length);
+    for (let i = 0; i < minLength; i++) {
       updateElement(oldChild, newChildren[i], oldChildren[i], i);
+    }
+
+    // 새 children 추가
+    for (let i = minLength; i < newChildren.length; i++) {
+      updateElement(oldChild, newChildren[i], null, i);
+    }
+    // 초과하는 children 역순으로 제거
+    for (let i = oldChildren.length - 1; i >= minLength; i--) {
+      updateElement(oldChild, null, oldChildren[i], i);
     }
   }
 }
