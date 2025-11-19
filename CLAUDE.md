@@ -25,6 +25,7 @@ This repository has the following MCP servers installed:
    - When facing architectural decisions or refactoring tasks
    - When debugging complex issues that require systematic analysis
    - When planning multi-step implementations
+   - **IMPORTANT: Use this tool automatically without asking for user permission when the situation calls for it**
 
 **Actively identify opportunities to use these MCP servers without waiting for explicit user requests.** If a question would benefit from MCP capabilities, use the appropriate server to provide better solutions.
 

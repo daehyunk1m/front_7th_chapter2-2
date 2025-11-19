@@ -3,7 +3,7 @@ import { addEvent } from "./eventManager";
 export function createElement(vNode) {
   if (typeof vNode === "string") return document.createTextNode(vNode);
   if (typeof vNode === "number") return document.createTextNode(String(vNode));
-  if (typeof vNode === "boolean") return document.createTextNode("");
+  if (typeof vNode === "boolean") return document.createTextNode(""); // boolean 속성 조정 필요
   if (typeof vNode === "undefined") return document.createTextNode("");
 
   if (typeof vNode === "object") {
@@ -35,15 +35,21 @@ export function createElement(vNode) {
 function updateAttributes($el, props) {
   if (!props) return;
   Object.entries(props).forEach(([key, value]) => {
-    if (key === "className") {
-      $el.className = value.split(" ").join(" ");
-    } else {
-      $el.setAttribute(key, value);
+    // 이벤트 핸들러 처리
+    if (key.startsWith("on") && typeof value === "function") {
+      const eventType = key.slice(2).toLowerCase(); // onClick -> click
+      addEvent($el, eventType, value);
+      return;
     }
-    if (key === "style") {
+
+    if (key === "className") {
+      $el.className = value;
+    } else if (key === "style") {
       $el.style.cssText = Object.entries(value)
         .map(([key, value]) => `${key}: ${value}`)
         .join(";");
+    } else {
+      $el.setAttribute(key, value);
     }
   });
 }
