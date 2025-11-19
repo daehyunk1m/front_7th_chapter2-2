@@ -73,16 +73,19 @@ export function updateElement(parentElement, newNode, oldNode, index = 0) {
     if (String(newNode) !== String(oldNode)) {
       oldChild.textContent = newNode;
     }
+    return;
   }
 
   // 텍스트노드 <-> 요소 타입 → 교체
   if (isTextNode(newNode) !== isTextNode(oldNode)) {
     parentElement.replaceChild(createElement(newNode), oldChild);
+    return;
   }
 
   // 요소 타입이 다름 → 교체
   if (newNode.type !== oldNode.type) {
     parentElement.replaceChild(createElement(newNode), oldChild);
+    return;
   }
 
   // 같은 타입 요소 → 속성 업데이트 + children 재귀
